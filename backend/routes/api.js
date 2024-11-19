@@ -4,7 +4,7 @@ const router = express.Router();
 const ticketController = require('../controllers/TicketController');
 
 // Route to add tickets
-router.post('/tickets', ticketController.addTickets);
+router.post('/tickets/add', ticketController.addTickets);
 
 // Route to purchase a ticket
 router.post('/tickets/purchase', ticketController.purchaseTicket);

@@ -3,9 +3,18 @@ const TicketPool = require('../models/TicketPool');  // Import the instance of T
 
 // Add tickets to the pool
 exports.addTickets = (req, res) => {
-    const { tickets } = req.body;  // Destructure the tickets from request body
+    const { tickets } = req.body; // Destructure the tickets from request body
+
+    if (!Array.isArray(tickets) || tickets.length === 0) {
+        return res.status(400).json({ message: 'Please provide an array of tickets to add' });
+    }
+
     TicketPool.addTickets(tickets); // Add tickets to the pool
-    res.status(200).json({ message: `${tickets.length} tickets added successfully` });
+
+    res.status(200).json({
+        message: `${tickets.length} tickets added successfully`,
+        status: TicketPool.getStatus(), // Include the updated status in the response
+    });
 };
 
 // Purchase a ticket from the pool

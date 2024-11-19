@@ -1,23 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { getTicketStatus } from '../services/ticketService'; // API service
+import React from 'react';
 
-const TicketStatus = () => {
-  const [status, setStatus] = useState({ available: 0, sold: 0 });
-
-  useEffect(() => {
-    const fetchStatus = async () => {
-      const result = await getTicketStatus();
-      setStatus(result);
-    };
-
-    fetchStatus();
-  }, []);
-
+const TicketStatus = ({ tickets }) => {
   return (
-    <div className="p-4 border rounded">
-      <h2 className="font-bold text-lg">Ticket Status</h2>
-      <p>Available Tickets: {status.available}</p>
-      <p>Sold Tickets: {status.sold}</p>
+    <div className="p-4 bg-gray-100 rounded shadow">
+      <h2 className="text-lg font-semibold">Ticket Status</h2>
+      <p>Total Tickets: <span className="text-blue-500">{tickets.total}</span></p>
+      <p>Available Tickets: <span className="text-green-500">{tickets.available}</span></p>
+      <p>Sold Tickets: <span className="text-red-500">{tickets.sold}</span></p>
     </div>
   );
 };

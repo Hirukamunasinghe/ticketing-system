@@ -1,41 +1,35 @@
-// Simulating vendor and customer threads
-const axios = require('axios');
+import axios from 'axios';
 
-class Vendor {
-    static async addTickets() {
-        // Simulating the action of adding tickets to the pool by a vendor
-        const tickets = ["Ticket-101", "Ticket-102", "Ticket-103"];
-        await axios.post('http://localhost:3000/api/tickets/add', { tickets });
-        console.log(`${tickets.length} tickets added by Vendor`);
-    }
-}
+const API_BASE = "http://localhost:3000/api/tickets";
 
-class Customer {
-    static async purchaseTicket() {
-        // Simulating the action of purchasing tickets by a customer
-        const response = await axios.post('http://localhost:3000/api/tickets/purchase');
-        console.log(response.data.message);
-    }
-}
+// Fetch ticket status
+export const getTicketStatus = async () => {
+  try {
+    const response = await axios.get(`${API_BASE}/status`);
+    return response.data; // { available: 20, sold: 0 }
+  } catch (error) {
+    console.error("Error fetching ticket status:", error);
+    throw error;
+  }
+};
 
-// Simulate multiple vendors adding tickets concurrently
-async function simulateVendors() {
-    for (let i = 0; i < 5; i++) {
-        setTimeout(() => {
-            Vendor.addTickets();
-        }, Math.random() * 1000);
-    }
-}
+// Other API functions
+export const addTickets = async (tickets) => {
+  try {
+    const response = await axios.post(`${API_BASE}/add`, { tickets });
+    return response.data;
+  } catch (error) {
+    console.error("Error adding tickets:", error);
+    throw error;
+  }
+};
 
-// Simulate multiple customers purchasing tickets concurrently
-async function simulateCustomers() {
-    for (let i = 0; i < 5; i++) {
-        setTimeout(() => {
-            Customer.purchaseTicket();
-        }, Math.random() * 1000);
-    }
-}
-
-// Run simulations
-simulateVendors();
-simulateCustomers();
+export const purchaseTicket = async () => {
+  try {
+    const response = await axios.post(`${API_BASE}/purchase`);
+    return response.data;
+  } catch (error) {
+    console.error("Error purchasing ticket:", error);
+    throw error;
+  }
+};
